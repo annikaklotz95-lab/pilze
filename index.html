@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Myras geheimnisvoller Pilzwald</title>
+<meta name="description" content="Eine kleine illustrierte Lernwelt rund um Pilze für die Klassen 1 und 2.">
+<meta name="theme-color" content="#526F55">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Grandstander:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Gemeinsame Filter für die handgezeichnete Optik -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- leicht wackelige, organische Konturen -->
+    <filter id="f-wob" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Buntstift: wackelige Kontur + körnige Textur -->
+    <filter id="f-paint" x="-6%" y="-6%" width="112%" height="112%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="11" result="g"/>
+      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.19  0 0 0 0 0.15  1.1 0 0 0 -0.48" result="gk"/>
+      <feComposite in="gk" in2="d" operator="in" result="grain"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode in="grain"/></feMerge>
+    </filter>
+    <!-- Aquarell: weichere Ränder, Pigmentkörnung -->
+    <filter id="f-wc" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="21" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="5" result="b"/>
+      <feColorMatrix in="b" type="matrix" values="0 0 0 0 0.98  0 0 0 0 0.96  0 0 0 0 0.9  0.4 0 0 0 -0.2" result="bl"/>
+      <feComposite in="bl" in2="d" operator="in" result="bloom"/>
+      <feMerge><feMergeNode in="d"/><feMergeNode in="bloom"/></feMerge>
+    </filter>
+    <filter id="f-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="f-blur1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="f-blur2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="f-blur3" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="f-blur4" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+    <!-- gesperrte Orte: entsättigt, im Nebel -->
+    <filter id="f-grey"><feColorMatrix type="saturate" values="0.12"/><feComponentTransfer><feFuncR type="linear" slope=".85" intercept=".12"/><feFuncG type="linear" slope=".85" intercept=".12"/><feFuncB type="linear" slope=".85" intercept=".11"/></feComponentTransfer></filter>
+    <radialGradient id="g-orb"><stop offset="0" stop-color="#FFF4CC" stop-opacity=".95"/><stop offset=".45" stop-color="#E9C776" stop-opacity=".55"/><stop offset="1" stop-color="#E9C776" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g-lila"><stop offset="0" stop-color="#FFF4CC" stop-opacity=".9"/><stop offset=".5" stop-color="#E9C776" stop-opacity=".45"/><stop offset="1" stop-color="#E9C776" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+
+<div id="app"></div>
+<div id="topbar"></div>
+<div id="lila-bubble" hidden role="status" aria-live="polite"></div>
+<div id="modal-root"></div>
+<noscript><p style="padding:2rem;font-size:1.2rem">Bitte JavaScript aktivieren, um den Pilzwald zu betreten.</p></noscript>
+
+<!-- Grafiken & Inhalte -->
+<script src="js/art.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/content.js"></script>
+<script src="js/dialog.js"></script>
+<!-- Speicherung & Dienste -->
+<script src="js/store.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/dnd.js"></script>
+<!-- Bildschirme -->
+<script src="js/screens/home.js"></script>
+<script src="js/screens/map.js"></script>
+<script src="js/screens/mission1.js"></script>
+<script src="js/screens/mission2.js"></script>
+<script src="js/screens/mission3.js"></script>
+<script src="js/screens/mission4.js"></script>
+<script src="js/screens/mission5.js"></script>
+<script src="js/screens/mission6.js"></script>
+<script src="js/screens/vorwissen.js"></script>
+<script src="js/screens/garden.js"></script>
+<script src="js/screens/lexikon.js"></script>
+<script src="js/screens/journal.js"></script>
+<script src="js/screens/profiles.js"></script>
+<script src="js/screens/teacher.js"></script>
+<!-- Navigation & Start -->
+<script src="js/app.js"></script>
+</body>
+</html>
